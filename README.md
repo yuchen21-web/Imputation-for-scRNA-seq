@@ -72,6 +72,7 @@ src/CLIMP$ sudo python3 setup.py install --record installed.txt
 3.2 Use CL-Impute utils function in python
 ```python
 import CLImputeUtils
+import pandas as pd
 
 device=torch.device('cpu') # or you can use cuda
 
@@ -91,5 +92,5 @@ choose_cell = CLImputeUtils.select_neighbours(model, X, k=20)
 imputed_data = CLImputeUtils.LS_imputation(drop_data, choose_cell, device)
 
 # saved file
-pd.DataFrame(imputed_data, index=cells, columns=genes)
+pd.DataFrame(imputed_data, index=cells, columns=genes).to_csv('saved path')
 ```
