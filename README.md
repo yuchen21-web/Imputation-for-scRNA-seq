@@ -15,7 +15,7 @@ An imputation method for scRNA-seq data based on contrastive learning
 
 We provide three ways to perform CL-Impute. Besides, we provided a saved trained model and Zeisel dataset to verify the effectiveness of the paper.
 
-## 1. Run Impute.py on the project.
+## 1. Run Impute.py on the project to execute a default imputation
 
 ```python
 # change directory to src/CLIMP
