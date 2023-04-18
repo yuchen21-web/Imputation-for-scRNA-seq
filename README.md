@@ -15,9 +15,9 @@ An imputation method for scRNA-seq data based on contrastive learning
 
 We provide three ways to perform CL-Impute. Besides, we provided a saved trained model and Zeisel dataset to verify the effectiveness of the paper.
 
-1. change directory to src/CLIMP and run Impute.py.
+1.change directory to src/CLIMP and run Impute.py.
 
-2. You can perform CL-Impute on jupyter notebook or follow the process:
+2.You can perform CL-Impute on jupyter notebook or follow the process:
 
 
 ```python
@@ -52,7 +52,7 @@ print('imputed data L1:', utils.l1_distance(imputed_data, groundTruth_data))
 
 ```
 
-3. Package CL-Impute as a python function with setup.py for use in other code
+3.Package CL-Impute as a python function with setup.py for use in other code
 
 3.1 package CL-Impute utils in shells
 ```shell
