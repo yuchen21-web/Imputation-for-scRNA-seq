@@ -44,7 +44,7 @@ drop_data = CLImputeUtils.impute_dropout(groundTruth_data, drop_rate=0.4)
 X = torch.FloatTensor(np.copy(drop_data)).to(device)
 # Step3.1: loading the provided trained model
 model = CLImputeUtils.load_pretained_model(X, load_path='data/Zeisel/Zeisel_saved_model.pkl')
-# or Step3.2: training a model
+# or Step3.1: training a model
 # model = CLImputeUtils.training(X, hidden_size=128, epoch=100, aug_rate=0.4)
 ```
 ```python
@@ -60,7 +60,7 @@ print('dropout data L1:', CLImputeUtils.l1_distance(drop_data, groundTruth_data)
 print('imputed data L1:', CLImputeUtils.l1_distance(imputed_data, groundTruth_data))
 ```
 
-## 3.Package CL-Impute as a python function
+## 3.Use CL-Impute as a python function
 
 Package CL-Impute as a python function with setup.py for use in other code
 
@@ -72,4 +72,24 @@ src/CLIMP$ sudo python3 setup.py install --record installed.txt
 3.2 Use CL-Impute utils function in python
 ```python
 import CLImputeUtils
+
+device=torch.device('cpu') # or you can use cuda
+
+# load data that need to be imputed
+drop_data, cells, genes = CLImputeUtils.load_data(datapath)
+
+# or you can load a groundTruth data to test imputation performance
+# groundTruth_data, cells, genes = CLImputeUtils.load_data(datapath)
+# drop_data = CLImputeUtils.impute_dropout(groundTruth_data, drop_rate=0.4)
+
+
+# contrastive learning the embedding
+model = CLImputeUtils.training(torch.FloatTensor(drop_data).to(device), hidden_size=128, epoch=100, aug_rate=0.4)
+
+## imputation
+choose_cell = CLImputeUtils.select_neighbours(model, X, k=20)
+imputed_data = CLImputeUtils.LS_imputation(drop_data, choose_cell, device)
+
+# saved file
+pd.DataFrame(imputed_data, index=cells, columns=genes)
 ```
