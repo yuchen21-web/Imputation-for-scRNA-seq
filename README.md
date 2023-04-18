@@ -26,50 +26,50 @@ python Impute.py
 
 ```python
 import torch
-from CLIMP import CLImputeUtils as utils
+from CLIMP import CLImputeUtils
 import numpy as np
 device=torch.device('cpu')
 dataset_name=Zeisel
 ```
 ```python
 ## Step1: reading dataset
-groundTruth_data, cells, genes = utils.load_data('data/Zeisel/Zeisel_top2000.csv')
+groundTruth_data, cells, genes = CLImputeUtils.load_data('data/Zeisel/Zeisel_top2000.csv')
 ```
 ```python
 ## Step2: simulate dropout-events
-drop_data = utils.impute_dropout(groundTruth_data, drop_rate=0.4)
+drop_data = CLImputeUtils.impute_dropout(groundTruth_data, drop_rate=0.4)
 ```
 ```python
 ## Step3: training embedding
 X = torch.FloatTensor(np.copy(drop_data)).to(device)
 # Step3.1: loading the provided trained model
-model = utils.load_pretained_model(X, load_path='data/Zeisel/Zeisel_saved_model.pkl')
+model = CLImputeUtils.load_pretained_model(X, load_path='data/Zeisel/Zeisel_saved_model.pkl')
 # or Step3.2: training a model
-# model = utils.training(X, hidden_size=128, epoch=100, aug_rate=0.4)
+# model = CLImputeUtils.training(X, hidden_size=128, epoch=100, aug_rate=0.4)
 ```
 ```python
 ## Step4: select k similiar cells and imputation
-choose_cell = utils.select_neighbours(model, X, k=20)
-imputed_data = utils.LS_imputation(drop_data, choose_cell, device)
+choose_cell = CLImputeUtils.select_neighbours(model, X, k=20)
+imputed_data = CLImputeUtils.LS_imputation(drop_data, choose_cell, device)
 ```
 ```python
 ## Step5: evaluation
-print('dropout data PCCs:', utils.pearson_corr(drop_data, groundTruth_data))
-print('imputed data PCCs:', utils.pearson_corr(imputed_data, groundTruth_data))
-print('dropout data L1:', utils.l1_distance(drop_data, groundTruth_data))
-print('imputed data L1:', utils.l1_distance(imputed_data, groundTruth_data))
+print('dropout data PCCs:', CLImputeUtils.pearson_corr(drop_data, groundTruth_data))
+print('imputed data PCCs:', CLImputeUtils.pearson_corr(imputed_data, groundTruth_data))
+print('dropout data L1:', CLImputeUtils.l1_distance(drop_data, groundTruth_data))
+print('imputed data L1:', CLImputeUtils.l1_distance(imputed_data, groundTruth_data))
 ```
 
 ## 3.Package CL-Impute as a python function
 
 Package CL-Impute as a python function with setup.py for use in other code
 
-3.1 package CL-Impute utils in shells
+3.1 Package CL-Impute utils in shells
 ```shell
 src/CLIMP$ python3 setup.py bdist
 src/CLIMP$ sudo python3 setup.py install --record installed.txt
 ```
-3.2 use CL-Impute utils in python
+3.2 Use CL-Impute utils function in python
 ```python
 import CLImputeUtils
 ```
