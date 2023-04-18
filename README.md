@@ -29,7 +29,7 @@ dataset_name=Zeisel
 groundTruth_data, cells, genes = utils.load_data('data/Zeisel/Zeisel_top2000.csv')
 
 ## Step2: simulate dropout-events
-drop_data, i, j, ix = utils.impute_dropout(groundTruth_data, drop_rate=0.4)
+drop_data = utils.impute_dropout(groundTruth_data, drop_rate=0.4)
 
 ## Step3: training embedding
 X = torch.FloatTensor(np.copy(drop_data)).to(device)
