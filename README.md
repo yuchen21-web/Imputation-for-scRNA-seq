@@ -42,7 +42,7 @@ model = utils.load_pretained_model(X, load_path='data/Zeisel/Zeisel_saved_model.
 
 ## Step4: select k similiar cells and imputation
 choose_cell = utils.select_neighbours(model, X, k=20)
-imputed_data = utils.LS_imputation(drop_data, choose_cell, device, filter_noise=5)
+imputed_data = utils.LS_imputation(drop_data, choose_cell, device)
 
 ## Step5: evaluation
 print('dropout data PCCs:', utils.pearson_corr(drop_data, groundTruth_data))
