@@ -22,12 +22,14 @@ We provide three ways for you to use CL-Impute:
 import torch
 from CLIMP import CLImputeUtils as utils
 import numpy as np
+device=torch.device('cpu')
+dataset_name=Zeisel
 
 ## Step1: reading dataset
 groundTruth_data, cells, genes = utils.load_data('data/Zeisel/Zeisel_top2000.csv')
 
 ## Step2: simulate dropout-events
-drop_data, i, j, ix = utils.impute_dropout(groundTruth_data, drop_rate=drop_rate)
+drop_data, i, j, ix = utils.impute_dropout(groundTruth_data, drop_rate=0.4)
 
 ## Step3: training embedding
 X = torch.FloatTensor(np.copy(drop_data)).to(device)
@@ -56,12 +58,12 @@ print('imputed data L1:', utils.l1_distance(imputed_data, groundTruth_data))
 
 3.Package CL-Impute as a Python function package with setup.py for use in other code
 
-3.1 package CL-Impute utils
+3.1 package CL-Impute utils in shells
 ```shell
 src/CLIMP$ python3 setup.py bdist
 src/CLIMP$ sudo python3 setup.py install --record installed.txt
 ```
-3.2 use CL-Impute utils in other code
+3.2 use CL-Impute utils in python
 ```python
 import CLImputeUtils
 ```
