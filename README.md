@@ -17,10 +17,10 @@ We provide three ways to perform CL-Impute. Besides, we provided a saved trained
 
 ## 1. Run Impute.py on the project.
 
-'''python
+```python
 # change directory to src/CLIMP
 python Impute.py
-'''
+```
 
 ## 2. Follow the procedure below to perform CL-Impute on jupyter or on tutorial_CLImpte.ipynb
 
