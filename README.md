@@ -76,7 +76,7 @@ import pandas as pd
 
 device=torch.device('cpu') # or you can use cuda
 
-# load data that need to be imputed
+# load data that need to be imputed, shape=[cells, genes]
 drop_data, cells, genes = CLImputeUtils.load_data(datapath)
 
 # or you can load a groundTruth data to test imputation performance
