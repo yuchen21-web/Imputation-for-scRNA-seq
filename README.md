@@ -18,7 +18,7 @@ We provide three ways for you to use CL-Impute:
 1.You can perform CL-Impute on jupyter notebook or follow the process:
 
 
-```
+```python
 import torch
 from CLIMP import CLImputeUtils as utils
 import numpy as np
