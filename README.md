@@ -1,4 +1,4 @@
-# clustering-for-scRNA-seq
+# CL-Impute
 
 An imputation method for scRNA-seq data based on contrastive learning
 
