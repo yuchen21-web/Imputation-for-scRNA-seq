@@ -28,7 +28,6 @@ src/CLIMP$ sudo python3 setup.py install --record installed.txt
 ```python
 import CLImputeUtils
 import pandas as pd
-
 device=torch.device('cpu') # or you can use cuda
 
 # load data that need to be imputed, shape=[cells, genes]
@@ -38,9 +37,8 @@ drop_data, cells, genes = CLImputeUtils.load_data(datapath)
 # groundTruth_data, cells, genes = CLImputeUtils.load_data(datapath)
 # drop_data = CLImputeUtils.impute_dropout(groundTruth_data, drop_rate=0.4)
 
-
 # contrastive learning the embedding
-model = CLImputeUtils.training(torch.FloatTensor(drop_data).to(device), hidden_size=128, epoch=100, aug_rate=0.4)
+model = CLImputeUtils.training(torch.FloatTensor(drop_data).to(device), hidden_size=64, epoch=100, aug_rate=0.4)
 
 ## imputation
 choose_cell = CLImputeUtils.select_neighbours(model, X, k=20)
@@ -148,8 +146,6 @@ print('ARI: {:.3f}, NMI: {:.3f}, NMI: {:.3f}'.
 ARI: 0.879, NMI: 0.841, NMI: 0.938
 '''
 ```
-
-
 ## 3. Run Impute.py programs directly
 
 change directory to src/CLIMP and run Impute.py
