@@ -52,7 +52,6 @@ imputed_data = CLImputeUtils.LS_imputation(drop_data, choose_cell, device)
 
 ### 2.1 Perform CL-Impute with the jupyter notebook
 
-
 ```python
 ## Step1: reading dataset
 groundTruth_data, cells, genes = CLImputeUtils.load_data('data/Zeisel/Zeisel_top2000.csv')
@@ -85,7 +84,7 @@ print('dropout data L1:', CLImputeUtils.l1_distance(drop_data, groundTruth_data)
 print('imputed data L1:', CLImputeUtils.l1_distance(imputed_data, groundTruth_data))
 ```
 
-### 2.2 Verify th experimental results of Zeisel dataset in this paper
+### 2.2 Verify the experimental results of Zeisel dataset in this paper
 
 ```python
 import torch
