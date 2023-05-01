@@ -92,11 +92,7 @@ print('dropout data RMSE: {:.4f}, imputed data RMSE: {:.4f}'.
       format(utils.RMSE(drop_data, groundTruth_data), 
              utils.RMSE(imputed_data, groundTruth_data)))
 ```
-drop rate: 0.40
-loading pre-train model
-dropout data PCCs: 0.7688, imputed data PCCs: 0.9483
-dropout data L1: 1.8372, imputed data L1: 1.0810
-dropout data RMSE: 17.2358, imputed data RMSE: 8.5091
+
 
 ```python
 # Verify clustering results of Zeisel dataset
@@ -108,8 +104,10 @@ print('ARI: {:.3f}, NMI: {:.3f}, NMI: {:.3f}'.
       format(utils.adjusted_rand_score(clusterResults, labels), 
              utils.normalized_mutual_info_score(clusterResults, labels),
              utils.getPurityScore(clusterResults, labels)))
-```
+'''
 ARI: 0.879, NMI: 0.841, NMI: 0.938
+'''
+```
 
 ### 2.2 Perform CL-Impute with the jupyter notebook
 
