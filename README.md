@@ -53,6 +53,14 @@ imputed_data = CLImputeUtils.LS_imputation(drop_data, choose_cell, device)
 ### 2.1 Perform CL-Impute with the jupyter notebook
 
 ```python
+import torch
+from CLIMP import CLImputeUtils
+import numpy as np
+import pandas as pd
+device=torch.device('cpu')
+```
+
+```python
 ## Step1: reading dataset
 groundTruth_data, cells, genes = CLImputeUtils.load_data('data/Zeisel/Zeisel_top2000.csv')
 ```
@@ -87,42 +95,35 @@ print('imputed data L1:', CLImputeUtils.l1_distance(imputed_data, groundTruth_da
 ### 2.2 Verify the experimental results of Zeisel dataset in this paper
 
 ```python
-import torch
-from CLIMP import CLImputeUtils
-import numpy as np
-device=torch.device('cpu')
-dataset_name=Zeisel
-```
-```python
 # Verify experimental results of Zeisel dataset in this paper
 
 ## 1. loading dataset and the simulated dropout events data with 40% used in our experiment
-groundTruth_data, cells, genes = utils.load_data('CLIMP/data/Zeisel/Zeisel_top2000.csv')
-drop_data, _, _ = utils.load_data('CLIMP/data/Zeisel/Zeisel_d40.csv')
+groundTruth_data, cells, genes = CLImputeUtils.load_data('CLIMP/data/Zeisel/Zeisel_top2000.csv')
+drop_data, _, _ = CLImputeUtils.load_data('CLIMP/data/Zeisel/Zeisel_d40.csv')
 X = torch.FloatTensor(np.copy(drop_data)).to(device)
 drop_rate = (len(groundTruth_data.nonzero()[0])-len(drop_data.nonzero()[0]))/len(groundTruth_data.nonzero()[0])
 print('drop rate: {:.2f}'.format(drop_rate))
 
 ## 2. loading the saved model
-model = utils.load_pretained_model(X, load_path='CLIMP/data/Zeisel/Zeisel_saved_model.pkl')
+model = CLImputeUtils.load_pretained_model(X, load_path='CLIMP/data/Zeisel/Zeisel_saved_model.pkl')
 
 ## 3.imputation
-choose_cell = utils.select_neighbours(model, X, k=20)
-imputed_data = utils.LS_imputation(drop_data, choose_cell, device, filter_noise=2)
+choose_cell = CLImputeUtils.select_neighbours(model, X, k=20)
+imputed_data = CLImputeUtils.LS_imputation(drop_data, choose_cell, device, filter_noise=2)
 
 # saved
 # imputed_saved = pd.DataFrame(imputed_data.T, index=genes, columns=cells)
 # imputed_saved.to_csv('CLIMP/data/Zeisel/Zeisel_Imputed.csv')
 
 print('dropout data PCCs: {:.4f}, imputed data PCCs: {:.4f}'.
-      format(utils.pearson_corr(drop_data, groundTruth_data), 
-             utils.pearson_corr(imputed_data, groundTruth_data)))
+      format(CLImputeUtils.pearson_corr(drop_data, groundTruth_data), 
+             CLImputeUtils.pearson_corr(imputed_data, groundTruth_data)))
 print('dropout data L1: {:.4f}, imputed data L1: {:.4f}'.
-      format(utils.l1_distance(drop_data, groundTruth_data), 
-             utils.l1_distance(imputed_data, groundTruth_data)))
+      format(CLImputeUtils.l1_distance(drop_data, groundTruth_data), 
+             CLImputeUtils.l1_distance(imputed_data, groundTruth_data)))
 print('dropout data RMSE: {:.4f}, imputed data RMSE: {:.4f}'.
-      format(utils.RMSE(drop_data, groundTruth_data), 
-             utils.RMSE(imputed_data, groundTruth_data)))
+      format(CLImputeUtils.RMSE(drop_data, groundTruth_data), 
+             CLImputeUtils.RMSE(imputed_data, groundTruth_data)))
 '''
 drop rate: 0.40
 loading pre-train model
@@ -138,9 +139,9 @@ clusterResults = clusterResults.values.squeeze()
 labels = pd.read_csv('CLIMP/data/Zeisel/Zeisel_cell_label.csv', index_col=0)
 labels = labels.values.squeeze()
 print('ARI: {:.3f}, NMI: {:.3f}, NMI: {:.3f}'.
-      format(utils.adjusted_rand_score(clusterResults, labels), 
-             utils.normalized_mutual_info_score(clusterResults, labels),
-             utils.getPurityScore(clusterResults, labels)))
+      format(CLImputeUtils.adjusted_rand_score(clusterResults, labels), 
+             CLImputeUtils.normalized_mutual_info_score(clusterResults, labels),
+             CLImputeUtils.getPurityScore(clusterResults, labels)))
 '''
 ARI: 0.879, NMI: 0.841, NMI: 0.938
 '''
