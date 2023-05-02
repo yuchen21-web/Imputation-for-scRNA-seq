@@ -48,8 +48,7 @@ imputed_data = CLImputeUtils.LS_imputation(drop_data, choose_cell, device)
 # pd.DataFrame(imputed_data.T, index=genes, columns=cells).to_csv('saved path')
 ```
 
-## 2. Follow the procedure below to perform CL-Impute with the jupyter or on tutorial_CLImpte.ipynb
-
+## 2. Follow the procedure below to perform CL-Impute with the jupyter or on [tutorial_CLImpte.ipynb](https://github.com/yuchen21-web/Imputation-for-scRNA-seq/blob/main/src/tutorial_CLImpte.ipynb)
 ### 2.1 Perform CL-Impute with the jupyter notebook
 
 ```python
