@@ -4,7 +4,7 @@ CL-Impute is an imputation method for scRNA-seq data based on contrastive learni
 
 Overall architecture of the CL–Impute algorithm pipeline:
 
-![Model](https://github.com/yuchen21-web/Imputation-for-scRNA-seq/blob/main/src/Model.eps)
+![Model](https://github.com/yuchen21-web/Imputation-for-scRNA-seq/blob/main/src/Model.png)
 
 CL–Impute generates two augmented cells for each original cell by randomly masking non–zero values to simulate dropout events. The self–attention network is then designed to automatically capture the potential cell relationships and learn the latent cell representations. Finally, the two augmented cells are then considered positive pairs for contrastive learning. When the model training is completed, the learned cell representations are utilized to select k–nearest cells for the imputation task using the least square method.
 
