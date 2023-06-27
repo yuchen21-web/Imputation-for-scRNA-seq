@@ -97,16 +97,38 @@ def LS_imputation(drop_data, choose_cell, device, filter_noise=2):
 
     original_data = torch.FloatTensor(np.copy(drop_data)).to(device)
     dataImp = original_data.clone().to(device)
+
     for i in range(dataImp.shape[0]):
-        y = original_data[i, dataImp[i].nonzero()]
-        x = original_data[choose_cell[i], dataImp[i].nonzero()]
-        w = torch.matmul(torch.matmul(torch.linalg.inv(torch.matmul(x.T, x)), x.T), y)
-        impute_data = torch.matmul(original_data[choose_cell[i], (dataImp[i] == 0).nonzero()], w).squeeze()
-        # filter noise
-        impute_data[impute_data <= filter_noise] = 0
-        dataImp[i, dataImp[i] == 0] = impute_data
+        nonzero_index = dataImp[i].nonzero()
+        zero_index = (dataImp[i] == 0).nonzero()
+        y = original_data[i, nonzero_index]
+        x = original_data[choose_cell[i], nonzero_index]
+
+        xtx = torch.matmul(x.T, x)
+        rank = torch.linalg.matrix_rank(xtx)
+        if rank != x.shape[-1]: # detect the singular matrix
+            print('It is a singular matrix, use average imputation')
+            return Average_imputation(drop_data, choose_cell, device, filter_noise)
+
+        w = torch.matmul(torch.matmul(torch.linalg.inv(xtx), x.T), y)
+        impute_data = torch.matmul(original_data[choose_cell[i], zero_index], w)
+        impute_data[impute_data <= filter_noise] = 0   # filter noise
+        dataImp[i, zero_index] = impute_data
 
     return dataImp.detach().cpu().numpy()
+
+def Average_imputation(drop_data, choose_cell, device, filter_noise=2):
+    original_data = torch.FloatTensor(np.copy(drop_data)).to(device)
+    dataImp = original_data.clone().to(device)
+    for i in range(dataImp.shape[0]):
+        zero_index = (dataImp[i] == 0).nonzero()
+
+        impute_data = torch.mean(original_data[choose_cell[i], zero_index], dim=1)
+        # filter noise
+        impute_data[impute_data <= filter_noise] = 0
+        dataImp[i, zero_index] = impute_data.unsqueeze(-1)
+    return dataImp.detach().cpu().numpy()
+
 
 def cos_simility(imputed_data, original_data):
 
